@@ -1,0 +1,9 @@
+
+	1. Correr comando docker 
+docker run -d --name='mysql' --env="MYSQL_ROOT_PASSWORD=daniel.51" --publish 6603:3306 --volume=D:\mysql mysql:5.7docker run -d --name='mysql' --env="MYSQL_ROOT_PASSWORD=daniel.51" --publish 6603:3306 --volume=D:\mysql mysql:5.7
+
+2. docker exec -ti 5143dc2e10fe mysql -uroot -p
+ conectarse a la database desde quick terminal
+
+3. Cambiar password
+ ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'daniel.51';

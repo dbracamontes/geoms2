@@ -1,0 +1,27 @@
+server:
+  port: 8888
+spring:
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          #search-locations: file:/Users/dbracamo/git/geoms/confsvr/src/main/resources/config/geoms
+          #search-locations: file:///C:\Users\daniel\git\geoms\confsvr\src\main\resources\config\geoms
+          search-locations: classpath:config/geoms
+
+
+  
+#server:
+#  port: 8888
+#spring:
+#  cloud:
+#    config:
+#      server:
+#        encrypt.enabled: false
+#        git:
+#          uri: https://github.com/dbracamontes/config-repo
+#          searchPaths: geoservice,test
+#          username: dbracamontes
+#          password: daniel51

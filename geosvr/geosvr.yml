@@ -1,0 +1,17 @@
+version: '3.5'
+services:
+  webapp:
+    restart: always
+    build:
+      context: .
+      dockerfile: DockerFile
+    ports:
+      - '8080:8080'
+    expose:
+      - '8080'
+    networks:
+      - geo_network
+networks:
+ geo_network:
+    external: true
+    

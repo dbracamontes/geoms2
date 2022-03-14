@@ -1,0 +1,16 @@
+version: '3.5'
+services:
+  eurekasvr:
+    restart: always
+    build:
+      context: .
+      dockerfile: DockerFile
+    ports:
+      - '8761:8761'
+    expose:
+      - '8761'
+    networks:
+      - geo_network
+networks:
+  geo_network:
+    external: true

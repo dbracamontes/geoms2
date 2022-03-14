@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: geoms
+  profiles:
+    active: default
+  cloud:
+    config:
+      #uri: http://confsvr:8888
+      uri: http://localhost:8888
+      enabled: true
+      
+####Eureka service discovery
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url :
+      #defaultZone : http://eurekasvr:8761/eureka
+      defaultZone : http://localhost:8761/eureka
