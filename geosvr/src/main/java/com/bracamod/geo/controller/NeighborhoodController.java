@@ -1,6 +1,5 @@
 package com.bracamod.geo.controller;
 
-import java.lang.reflect.Method;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Comparator;
@@ -27,7 +26,6 @@ public class NeighborhoodController {
 	
 	@Autowired
 	private NeighborhoodRepository neighborhoodRepository;
-	private List<Neighborhood> neigborhoods; 
 
 	@GetMapping
 	public List<Neighborhood> getAll(){	
@@ -47,21 +45,15 @@ public class NeighborhoodController {
 	
 	@GetMapping("/zipCode/{zipCode}")
 	@ResponseBody
-	public ResponseEntity<List <Neighborhood>> findAllByZipCode(@PathVariable Long zipCode){
-		if(neigborhoods == null) {
-			neigborhoods = getAll();
-			System.out.print("Inisializing getAll neighboors");
-		}
-		
+	public ResponseEntity<List <Neighborhood>> findAllByZipCode(@PathVariable int zipCode){
 		Instant start = Instant.now();
 		List<Neighborhood> neigborhoodsByZipCode = 
-		neigborhoods
+		neighborhoodRepository.findAll()
 			.stream()
 			.filter(neighboor -> neighboor.getZipCode() == zipCode)
 			.collect(Collectors.toList());
 		
-		Optional<List<Neighborhood>> optional = Optional.of(neigborhoodsByZipCode);
-		HttpStatus httpStatus = optional.isPresent() ? HttpStatus.OK : HttpStatus.NO_CONTENT;
+		HttpStatus httpStatus = neigborhoodsByZipCode.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK;
 		
 		Instant finish = Instant.now();
 		long timeElapsed = Duration.between(start, finish).toMillis();
@@ -75,20 +67,13 @@ public class NeighborhoodController {
 		Instant start = Instant.now();
 		List<Neighborhood> neighboors = neighborhoodRepository.findNeighborByZipCode(zipCode);
 		
-		HttpStatus httpStatus =  neighboors.size() > 0 ? HttpStatus.OK : HttpStatus.NO_CONTENT;
+		HttpStatus httpStatus = neighboors.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK;
 		
 		Instant finish = Instant.now();
 		long timeElapsed = Duration.between(start, finish).toMillis();
 		System.out.println("Duration findAllByZipCodeDbZA " + timeElapsed);
 		
-		Method method[] = null;
-		try {
-			method = Class.forName("Neighborhood").getMethods();
-		} catch (SecurityException | ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		neighboors.stream().sorted(Comparator.comparing(Neighborhood::getName));
+		neighboors.sort(Comparator.comparing(Neighborhood::getName));
 			
 		return new ResponseEntity<>(neighboors,httpStatus);
 	}
