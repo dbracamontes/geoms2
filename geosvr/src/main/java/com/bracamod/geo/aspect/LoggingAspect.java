@@ -22,43 +22,29 @@ public class LoggingAspect {
 
 	@Before(value = "execution(* com.bracamod.geo.controller.*.*(..))")
 	public void before() {
-		System.out.println("Before executing");
-		log.info("Logging info before executing");
-
+		log.info("Before executing");
 	}
 	
 	@After(value = "execution(* com.bracamod.geo.controller.*.*(..))")
 	public void after(JoinPoint joinPoint) {
-		System.out.println("After executing");
-		System.out.println(joinPoint.getTarget());
-		System.out.println(joinPoint.getSignature());
-		System.out.println(joinPoint.toShortString());
-		System.out.println(joinPoint.toLongString());
-		
 		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
 		Method method = signature.getMethod();
-		System.out.println("Method name  - " + method.getName());
-
+		log.info("After executing - method: {}, target: {}", method.getName(), joinPoint.getTarget());
 	}
 	
 	@AfterReturning(value = "execution(* com.bracamod.geo.controller.*.*(..))",
 			returning = "result")
 	public void afterReturning(JoinPoint joinPoint, Object result) {
-		System.out.println("After returninhg");
-
+		log.info("After returning - method: {}", joinPoint.getSignature().getName());
 	}
 	
 	@AfterThrowing(pointcut ="execution(* com.bracamod.geo.controller.*.*(..))", throwing = "e")
 	public void myAfterThrowing(JoinPoint joinPoint, Throwable e) {
-		System.out.println("Okay - we're in the handler...");
-	    Signature signature = joinPoint.getSignature();
-	    String methodName = signature.getName();
-	    String stuff = signature.toString();
-	    String arguments = Arrays.toString(joinPoint.getArgs());
-	   System.out.println("Write something in the log... We have caught exception in method: "
-	        + methodName + " with arguments "
-	        + arguments + "\nand the full toString: " + stuff + "\nthe exception is: "
-	        + e.getMessage());
-	  }
+		Signature signature = joinPoint.getSignature();
+		String methodName = signature.getName();
+		String stuff = signature.toString();
+		String arguments = Arrays.toString(joinPoint.getArgs());
+		log.error("Exception in method: {} with arguments {} ({}): {}", methodName, arguments, stuff, e.getMessage());
+	}
 	
 }
